@@ -1,0 +1,294 @@
+dhivya@dhivya-Lenovo-E41-25:~$ sudo -i -u postgres;
+[sudo] password for dhivya:  
+postgres@dhivya-Lenovo-E41-25:~$ psql
+psql (14.7 (Ubuntu 14.7-0ubuntu0.22.04.1))
+Type "help" for help.
+
+postgres=# \l
+                             List of databases
+   Name    |  Owner   | Encoding | Collate | Ctype |   Access privileges   
+-----------+----------+----------+---------+-------+-----------------------
+ cinema    | postgres | UTF8     | en_IN   | en_IN | 
+ dhivya    | postgres | UTF8     | en_IN   | en_IN | 
+ payilagam | postgres | UTF8     | en_IN   | en_IN | 
+ postgres  | postgres | UTF8     | en_IN   | en_IN | 
+ sample    | postgres | UTF8     | en_IN   | en_IN | 
+ template0 | postgres | UTF8     | en_IN   | en_IN | =c/postgres          +
+           |          |          |         |       | postgres=CTc/postgres
+ template1 | postgres | UTF8     | en_IN   | en_IN | =c/postgres          +
+           |          |          |         |       | postgres=CTc/postgres
+(7 rows)
+
+postgres=# drop batabase cinema;
+ERROR:  syntax error at or near "batabase"
+LINE 1: drop batabase cinema;
+             ^
+postgres=# drop database cinema;
+DROP DATABASE
+postgres=# create database casestudy1;
+CREATE DATABASE
+postgres=# \c casestudy;
+connection to server on socket "/var/run/postgresql/.s.PGSQL.5432" failed: FATAL:  database "casestudy" does not exist
+Previous connection kept
+postgres=# \c casestudy1;
+You are now connected to database "casestudy1" as user "postgres".
+casestudy1=# create table cinema(id int,movie_name varchar(30),actor varchar(15),year int,minutes int);
+CREATE TABLE
+casestudy1=# insert into cinema values(1,Beast,Vijay,2019,134);
+ERROR:  column "beast" does not exist
+LINE 1: insert into cinema values(1,Beast,Vijay,2019,134);
+                                    ^
+casestudy1=# insert into cinema values(1,'Beast','Vijay',2019,134);
+INSERT 0 1
+casestudy1=# insert into cinema values(2,'Dharbar','Rajini',2021,121);
+INSERT 0 1
+casestudy1=# insert into cinema values(3,'Visvaasam','Ajith',2021,117);
+INSERT 0 1
+casestudy1=# insert into cinema values(4,'Mersal',,2020,123);
+ERROR:  syntax error at or near ","
+LINE 1: insert into cinema values(4,'Mersal',,2020,123);
+                                             ^
+casestudy1=# insert into cinema values(4,'Mersal',2020,123);
+INSERT 0 1
+casestudy1=# insert into cinema values(5,'Vikram',2023,125);
+INSERT 0 1
+casestudy1=# insert into cinema values(6,'Ajith','Attagasam',2006,119);
+INSERT 0 1
+casestudy1=# insert into cinema values(7,'JaiBhim','Surya',2018,1127);
+INSERT 0 1
+casestudy1=# insert into cinema values(8,'Kaithi','Karthik',2017,125);
+INSERT 0 1
+casestudy1=# insert into cinema values(9,'Ayothi','Sasikumar',2023,124);
+INSERT 0 1
+casestudy1=# insert into cinema values(10,'Deivathirumagan','Vikram',2017,121);
+INSERT 0 1
+casestudy1=# select * from cimema;
+ERROR:  relation "cimema" does not exist
+LINE 1: select * from cimema;
+                      ^
+casestudy1=# select * from cinema;
+ id |   movie_name    |   actor   | year | minutes 
+----+-----------------+-----------+------+---------
+  1 | Beast           | Vijay     | 2019 |     134
+  2 | Dharbar         | Rajini    | 2021 |     121
+  3 | Visvaasam       | Ajith     | 2021 |     117
+  4 | Mersal          | 2020      |  123 |        
+  5 | Vikram          | 2023      |  125 |        
+  6 | Ajith           | Attagasam | 2006 |     119
+  7 | JaiBhim         | Surya     | 2018 |    1127
+  8 | Kaithi          | Karthik   | 2017 |     125
+  9 | Ayothi          | Sasikumar | 2023 |     124
+ 10 | Deivathirumagan | Vikram    | 2017 |     121
+(10 rows)
+
+casestudy1=# update cinema set actor='Vijay'where id=4;
+UPDATE 1
+casestudy1=# select * from cinema;
+ id |   movie_name    |   actor   | year | minutes 
+----+-----------------+-----------+------+---------
+  1 | Beast           | Vijay     | 2019 |     134
+  2 | Dharbar         | Rajini    | 2021 |     121
+  3 | Visvaasam       | Ajith     | 2021 |     117
+  5 | Vikram          | 2023      |  125 |        
+  6 | Ajith           | Attagasam | 2006 |     119
+  7 | JaiBhim         | Surya     | 2018 |    1127
+  8 | Kaithi          | Karthik   | 2017 |     125
+  9 | Ayothi          | Sasikumar | 2023 |     124
+ 10 | Deivathirumagan | Vikram    | 2017 |     121
+  4 | Mersal          | Vijay     |  123 |        
+(10 rows)
+
+casestudy1=# update cinema set year=2020 where id=4;
+UPDATE 1
+casestudy1=# update cinema set minutes=123 where id=4;
+UPDATE 1
+casestudy1=# select * from cinema;
+ id |   movie_name    |   actor   | year | minutes 
+----+-----------------+-----------+------+---------
+  1 | Beast           | Vijay     | 2019 |     134
+  2 | Dharbar         | Rajini    | 2021 |     121
+  3 | Visvaasam       | Ajith     | 2021 |     117
+  5 | Vikram          | 2023      |  125 |        
+  6 | Ajith           | Attagasam | 2006 |     119
+  7 | JaiBhim         | Surya     | 2018 |    1127
+  8 | Kaithi          | Karthik   | 2017 |     125
+  9 | Ayothi          | Sasikumar | 2023 |     124
+ 10 | Deivathirumagan | Vikram    | 2017 |     121
+  4 | Mersal          | Vijay     | 2020 |     123
+(10 rows)
+
+casestudy1=# update cinema set actor='Kamal' where id=5;
+UPDATE 1
+casestudy1=# update cinema set year='2022' where id=5;
+UPDATE 1
+casestudy1=# update cinema set minutes='125' where id=5;
+UPDATE 1
+casestudy1=# select * from cinema;
+ id |   movie_name    |   actor   | year | minutes 
+----+-----------------+-----------+------+---------
+  1 | Beast           | Vijay     | 2019 |     134
+  2 | Dharbar         | Rajini    | 2021 |     121
+  3 | Visvaasam       | Ajith     | 2021 |     117
+  6 | Ajith           | Attagasam | 2006 |     119
+  7 | JaiBhim         | Surya     | 2018 |    1127
+  8 | Kaithi          | Karthik   | 2017 |     125
+  9 | Ayothi          | Sasikumar | 2023 |     124
+ 10 | Deivathirumagan | Vikram    | 2017 |     121
+  4 | Mersal          | Vijay     | 2020 |     123
+  5 | Vikram          | Kamal     | 2022 |     125
+(10 rows)
+
+casestudy1=# update cinema set minutes='127' where id=7;
+UPDATE 1
+casestudy1=# update cinema set movie_name='Attagasam',actor='Ajith' where id=6;
+UPDATE 1
+casestudy1=# select * from cinema;
+ id |   movie_name    |   actor   | year | minutes 
+----+-----------------+-----------+------+---------
+  1 | Beast           | Vijay     | 2019 |     134
+  2 | Dharbar         | Rajini    | 2021 |     121
+  3 | Visvaasam       | Ajith     | 2021 |     117
+  8 | Kaithi          | Karthik   | 2017 |     125
+  9 | Ayothi          | Sasikumar | 2023 |     124
+ 10 | Deivathirumagan | Vikram    | 2017 |     121
+  4 | Mersal          | Vijay     | 2020 |     123
+  5 | Vikram          | Kamal     | 2022 |     125
+  7 | JaiBhim         | Surya     | 2018 |     127
+  6 | Attagasam       | Ajith     | 2006 |     119
+(10 rows)
+
+casestudy1=# select movie_name from employee where year=2018;
+ERROR:  relation "employee" does not exist
+LINE 1: select movie_name from employee where year=2018;
+                               ^
+casestudy1=# select movie_name from cinema where year=2018;
+ movie_name 
+------------
+ JaiBhim
+(1 row)
+
+casestudy1=# select movie_name from cinema where year=2021;
+ movie_name 
+------------
+ Dharbar
+ Visvaasam
+(2 rows)
+
+casestudy1=# select movie_name from cinema where minutes >120;
+   movie_name    
+-----------------
+ Beast
+ Dharbar
+ Kaithi
+ Ayothi
+ Deivathirumagan
+ Mersal
+ Vikram
+ JaiBhim
+(8 rows)
+
+casestudy1=# select movie_name from cinema where actor='Vijay' and actor='Ajith';
+ movie_name 
+------------
+(0 rows)
+
+casestudy1=# select movie_name from cinema where actor='Vijay' or actor='Ajith'; movie_name 
+------------
+ Beast
+ Visvaasam
+ Mersal
+ Attagasam
+(4 rows)
+
+casestudy1=# select * from cinema where actor='Vijay' or actor='Ajith';
+ id | movie_name | actor | year | minutes 
+----+------------+-------+------+---------
+  1 | Beast      | Vijay | 2019 |     134
+  3 | Visvaasam  | Ajith | 2021 |     117
+  4 | Mersal     | Vijay | 2020 |     123
+  6 | Attagasam  | Ajith | 2006 |     119
+(4 rows)
+
+casestudy1=# select * from cinema where like '%i';
+ERROR:  type "like" does not exist
+LINE 1: select * from cinema where like '%i';
+                                   ^
+casestudy1=# select * from cinema where actor like '%i';
+ id | movie_name | actor  | year | minutes 
+----+------------+--------+------+---------
+  2 | Dharbar    | Rajini | 2021 |     121
+(1 row)
+
+casestudy1=# select * from cinema where length(actor)>5;
+ id |   movie_name    |   actor   | year | minutes 
+----+-----------------+-----------+------+---------
+  2 | Dharbar         | Rajini    | 2021 |     121
+  8 | Kaithi          | Karthik   | 2017 |     125
+  9 | Ayothi          | Sasikumar | 2023 |     124
+ 10 | Deivathirumagan | Vikram    | 2017 |     121
+(4 rows)
+
+casestudy1=# select * from cinema where length(actor)>5 and year>2020;
+ id | movie_name |   actor   | year | minutes 
+----+------------+-----------+------+---------
+  2 | Dharbar    | Rajini    | 2021 |     121
+  9 | Ayothi     | Sasikumar | 2023 |     124
+(2 rows)
+
+casestudy1=# select * from cinema where movie_name like 'A%'or movie_name like 'B%' or movie_name like 'C%' or movie_name like 'D';
+ id | movie_name |   actor   | year | minutes 
+----+------------+-----------+------+---------
+  1 | Beast      | Vijay     | 2019 |     134
+  9 | Ayothi     | Sasikumar | 2023 |     124
+  6 | Attagasam  | Ajith     | 2006 |     119
+(3 rows)
+
+casestudy1=# select * from cinema where actor='Vikram';
+ id |   movie_name    | actor  | year | minutes 
+----+-----------------+--------+------+---------
+ 10 | Deivathirumagan | Vikram | 2017 |     121
+(1 row)
+
+casestudy1=# select * from cinema where actor='Rajini' or year='2017';
+ id |   movie_name    |  actor  | year | minutes 
+----+-----------------+---------+------+---------
+  2 | Dharbar         | Rajini  | 2021 |     121
+  8 | Kaithi          | Karthik | 2017 |     125
+ 10 | Deivathirumagan | Vikram  | 2017 |     121
+(3 rows)
+
+casestudy1=# select * from cinema where   year>'2019' and actor='Vijay'or actor='Sasikumar';
+ id | movie_name |   actor   | year | minutes 
+----+------------+-----------+------+---------
+  9 | Ayothi     | Sasikumar | 2023 |     124
+  4 | Mersal     | Vijay     | 2020 |     123
+(2 rows)
+
+casestudy1=# select* from order by cinema;
+ERROR:  syntax error at or near "order"
+LINE 1: select* from order by cinema;
+                     ^
+casestudy1=# select* from Order by cinema;
+ERROR:  syntax error at or near "Order"
+LINE 1: select* from Order by cinema;
+                     ^
+casestudy1=# select* from Order by cinema;
+ERROR:  syntax error at or near "Order"
+LINE 1: select* from Order by cinema;
+                     ^
+casestudy1=# select* from cinema Order by id;
+ id |   movie_name    |   actor   | year | minutes 
+----+-----------------+-----------+------+---------
+  1 | Beast           | Vijay     | 2019 |     134
+  2 | Dharbar         | Rajini    | 2021 |     121
+  3 | Visvaasam       | Ajith     | 2021 |     117
+  4 | Mersal          | Vijay     | 2020 |     123
+  5 | Vikram          | Kamal     | 2022 |     125
+  6 | Attagasam       | Ajith     | 2006 |     119
+  7 | JaiBhim         | Surya     | 2018 |     127
+  8 | Kaithi          | Karthik   | 2017 |     125
+  9 | Ayothi          | Sasikumar | 2023 |     124
+ 10 | Deivathirumagan | Vikram    | 2017 |     121
+(10 rows)
+
+casestudy1=# 
