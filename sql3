@@ -1,0 +1,228 @@
+dhivya@dhivya-Lenovo-E41-25:~$ sudo -i -u postgres;
+[sudo] password for dhivya:  
+postgres@dhivya-Lenovo-E41-25:~$ psql
+psql (14.7 (Ubuntu 14.7-0ubuntu0.22.04.1))
+Type "help" for help.
+
+postgres=# \l
+                             List of databases
+    Name    |  Owner   | Encoding | Collate | Ctype |   Access privileges   
+------------+----------+----------+---------+-------+-----------------------
+ casestudy1 | postgres | UTF8     | en_IN   | en_IN | 
+ dhivya     | postgres | UTF8     | en_IN   | en_IN | 
+ payilagam  | postgres | UTF8     | en_IN   | en_IN | 
+ postgres   | postgres | UTF8     | en_IN   | en_IN | 
+ sample     | postgres | UTF8     | en_IN   | en_IN | 
+ template0  | postgres | UTF8     | en_IN   | en_IN | =c/postgres          +
+            |          |          |         |       | postgres=CTc/postgres
+ template1  | postgres | UTF8     | en_IN   | en_IN | =c/postgres          +
+            |          |          |         |       | postgres=CTc/postgres
+(7 rows)
+
+postgres=# \c dhivya
+You are now connected to database "dhivya" as user "postgres".
+dhivya=# create table customers(id int,name varchar(30),age int,address varchar(30),salary int);
+CREATE TABLE
+dhivya=# insert into customers(1,"Dhivya",19,"SRM","15000");
+ERROR:  syntax error at or near "1"
+LINE 1: insert into customers(1,"Dhivya",19,"SRM","15000");
+                              ^
+dhivya=# insert into customers values(1,"Dhivya",19,"SRM","15000");
+ERROR:  column "Dhivya" does not exist
+LINE 1: insert into customers values(1,"Dhivya",19,"SRM","15000");
+                                       ^
+dhivya=# insert into customers values(1,"Dhivya",19,"SRM",15000);
+ERROR:  column "Dhivya" does not exist
+LINE 1: insert into customers values(1,"Dhivya",19,"SRM",15000);
+                                       ^
+dhivya=# insert into customers values(1,'Dhivya',19,'SRM',15000);
+INSERT 0 1
+dhivya=# insert into customers values(2,'Adhithya',22,'EVK',16000);
+INSERT 0 1
+dhivya=# insert into customers values(3,'Kavitha',21,'ARL',18000);
+INSERT 0 1
+dhivya=# insert into customers values(4,'Vidhya',21,'CDM',20000);
+INSERT 0 1
+dhivya=# insert into customers values(5,'Poonkodi',19,'PLK',19000);
+INSERT 0 1
+dhivya=# create table orders(oid int,Date timestamp,customer_id  int,amount int);
+CREATE TABLE
+dhivya=# insert into orders values(102,2009-10-8 00:00:00,3,3000);
+ERROR:  syntax error at or near "00"
+LINE 1: insert into orders values(102,2009-10-8 00:00:00,3,3000);
+                                                ^
+dhivya=# insert into orders values(102,current_timestamp,3,3000);
+INSERT 0 1
+dhivya=# insert into orders values(103,current_timestamp,3,1500);
+INSERT 0 1
+dhivya=# insert into orders values(104,current_timestamp,2,1560);
+INSERT 0 1
+dhivya=# insert into orders values(103,current_timestamp,4,2060);
+INSERT 0 1
+dhivya=# select * from orders;
+ oid |            date            | customer_id | amount 
+-----+----------------------------+-------------+--------
+ 102 | 2023-04-24 15:05:46.795401 |           3 |   3000
+ 103 | 2023-04-24 15:06:13.313641 |           3 |   1500
+ 104 | 2023-04-24 15:06:29.370135 |           2 |   1560
+ 103 | 2023-04-24 15:07:03.682153 |           4 |   2060
+(4 rows)
+
+dhivya=# update orders set oid=100 where amount=1500;
+UPDATE 1
+dhivya=# update orders set oid=101 where amount=1560;
+UPDATE 1
+dhivya=# select * from orders;
+ oid |            date            | customer_id | amount 
+-----+----------------------------+-------------+--------
+ 102 | 2023-04-24 15:05:46.795401 |           3 |   3000
+ 103 | 2023-04-24 15:07:03.682153 |           4 |   2060
+ 100 | 2023-04-24 15:06:13.313641 |           3 |   1500
+ 101 | 2023-04-24 15:06:29.370135 |           2 |   1560
+(4 rows)
+
+dhivya=# ^C
+dhivya=# insert into customers values(1,'Dhivya',19,'SRM',15000);
+INSERT 0 1
+dhivya=# insert into customers values(2,'Adhithya',22,'EVK',16000);
+INSERT 0 1
+dhivya=# insert into customers values(3,'Kavitha',21,'ARL',18000);
+INSERT 0 1
+dhivya=# insert into customers values(4,'Vidhya',21,'CDM',20000);
+INSERT 0 1
+dhivya=# insert into customers values(5,'Poonkodi',19,'PLK',19000);
+INSERT 0 1
+INSERT 0 1
+ERROR:  syntax error at or near "0"
+LINE 1: INSERT 0 1
+               ^
+ERROR:  syntax error at or near "0"
+LINE 1: INSERT 0 1
+               ^
+ERROR:  syntax error at or near "0"
+LINE 1: INSERT 0 1
+               ^
+ERROR:  syntax error at or near "0"
+LINE 1: INSERT 0 1
+               ^
+dhivya-# select * from customers;
+ERROR:  syntax error at or near "0"
+LINE 1: INSERT 0 1
+               ^
+dhivya=# select * from customers;
+ id |   name   | age | address | salary 
+----+----------+-----+---------+--------
+  1 | Dhivya   |  19 | SRM     |  15000
+  2 | Adhithya |  22 | EVK     |  16000
+  3 | Kavitha  |  21 | ARL     |  18000
+  4 | Vidhya   |  21 | CDM     |  20000
+  5 | Poonkodi |  19 | PLK     |  19000
+  1 | Dhivya   |  19 | SRM     |  15000
+(6 rows)
+
+dhivya=# select * from orders;
+ oid |            date            | customer_id | amount 
+-----+----------------------------+-------------+--------
+ 102 | 2023-04-24 15:05:46.795401 |           3 |   3000
+ 103 | 2023-04-24 15:07:03.682153 |           4 |   2060
+ 100 | 2023-04-24 15:06:13.313641 |           3 |   1500
+ 101 | 2023-04-24 15:06:29.370135 |           2 |   1560
+(4 rows)
+
+dhivya=# select customers.name,customers.salary,orders oid where customers.id = orders.customer_id;
+ERROR:  missing FROM-clause entry for table "customers"
+LINE 1: select customers.name,customers.salary,orders oid where cust...
+               ^
+dhivya=# select customers.name,customers.salary,orders oid from customers,orders where customers.id = orders.customer_id;
+   name   | salary |                    oid                    
+----------+--------+-------------------------------------------
+ Kavitha  |  18000 | (102,"2023-04-24 15:05:46.795401",3,3000)
+ Vidhya   |  20000 | (103,"2023-04-24 15:07:03.682153",4,2060)
+ Kavitha  |  18000 | (100,"2023-04-24 15:06:13.313641",3,1500)
+ Adhithya |  16000 | (101,"2023-04-24 15:06:29.370135",2,1560)
+(4 rows)
+
+dhivya=# select customers.name,customers.salary,orders.oid from customers,orders where customers.id = orders.customer_id;
+   name   | salary | oid 
+----------+--------+-----
+ Kavitha  |  18000 | 102
+ Vidhya   |  20000 | 103
+ Kavitha  |  18000 | 100
+ Adhithya |  16000 | 101
+(4 rows)
+
+dhivya=# select * from customers;
+ id |   name   | age | address | salary 
+----+----------+-----+---------+--------
+  1 | Dhivya   |  19 | SRM     |  15000
+  2 | Adhithya |  22 | EVK     |  16000
+  3 | Kavitha  |  21 | ARL     |  18000
+  4 | Vidhya   |  21 | CDM     |  20000
+  5 | Poonkodi |  19 | PLK     |  19000
+  1 | Dhivya   |  19 | SRM     |  15000
+(6 rows)
+
+dhivya=# select customers.name,customers.salary,orders.oid from customers inner join orders on  customers.id = orders.customer_id;
+   name   | salary | oid 
+----------+--------+-----
+ Kavitha  |  18000 | 102
+ Vidhya   |  20000 | 103
+ Kavitha  |  18000 | 100
+ Adhithya |  16000 | 101
+(4 rows)
+
+dhivya=# select customers.name,customers.salary,orders.oid from customers  left join orders on  customers.id = orders.customer_id;
+   name   | salary | oid 
+----------+--------+-----
+ Kavitha  |  18000 | 102
+ Vidhya   |  20000 | 103
+ Kavitha  |  18000 | 100
+ Adhithya |  16000 | 101
+ Poonkodi |  19000 |    
+ Dhivya   |  15000 |    
+ Dhivya   |  15000 |    
+(7 rows)
+
+dhivya=# select customers.name,customers.salary,orders.oid from customers right join orders on  customers.id = orders.customer_id;
+   name   | salary | oid 
+----------+--------+-----
+ Kavitha  |  18000 | 102
+ Vidhya   |  20000 | 103
+ Kavitha  |  18000 | 100
+ Adhithya |  16000 | 101
+(4 rows)
+
+dhivya=# select * from customers right join orders on  customers.id = orders.customer_id;
+ id |   name   | age | address | salary | oid |            date            | customer_id | amount 
+----+----------+-----+---------+--------+-----+----------------------------+-------------+--------
+  3 | Kavitha  |  21 | ARL     |  18000 | 102 | 2023-04-24 15:05:46.795401 |           3 |   3000
+  4 | Vidhya   |  21 | CDM     |  20000 | 103 | 2023-04-24 15:07:03.682153 |           4 |   2060
+  3 | Kavitha  |  21 | ARL     |  18000 | 100 | 2023-04-24 15:06:13.313641 |           3 |   1500
+  2 | Adhithya |  22 | EVK     |  16000 | 101 | 2023-04-24 15:06:29.370135 |           2 |   1560
+(4 rows)
+
+dhivya=# select customers.name,customers.salary,orders.oid from customers full join orders on  customers.id = orders.customer_id;
+   name   | salary | oid 
+----------+--------+-----
+ Kavitha  |  18000 | 102
+ Vidhya   |  20000 | 103
+ Kavitha  |  18000 | 100
+ Adhithya |  16000 | 101
+ Poonkodi |  19000 |    
+ Dhivya   |  15000 |    
+ Dhivya   |  15000 |    
+(7 rows)
+
+dhivya=# select * from customers full join orders on  customers.id = orders.customer_id;
+ id |   name   | age | address | salary | oid |            date            | customer_id | amount 
+----+----------+-----+---------+--------+-----+----------------------------+-------------+--------
+  3 | Kavitha  |  21 | ARL     |  18000 | 102 | 2023-04-24 15:05:46.795401 |           3 |   3000
+  4 | Vidhya   |  21 | CDM     |  20000 | 103 | 2023-04-24 15:07:03.682153 |           4 |   2060
+  3 | Kavitha  |  21 | ARL     |  18000 | 100 | 2023-04-24 15:06:13.313641 |           3 |   1500
+  2 | Adhithya |  22 | EVK     |  16000 | 101 | 2023-04-24 15:06:29.370135 |           2 |   1560
+  5 | Poonkodi |  19 | PLK     |  19000 |     |                            |             |       
+  1 | Dhivya   |  19 | SRM     |  15000 |     |                            |             |       
+  1 | Dhivya   |  19 | SRM     |  15000 |     |                            |             |       
+(7 rows)
+
+dhivya=# 

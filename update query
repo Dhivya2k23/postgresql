@@ -1,0 +1,138 @@
+hivya@dhivya-Lenovo-E41-25:~$ sudo -i -u postgres
+[sudo] password for dhivya:  
+postgres@dhivya-Lenovo-E41-25:~$ psql
+psql (14.7 (Ubuntu 14.7-0ubuntu0.22.04.1))
+Type "help" for help.
+
+postgres=# \ls
+invalid command \ls
+Try \? for help.
+postgres=# \l
+                             List of databases
+   Name    |  Owner   | Encoding | Collate | Ctype |   Access privileges   
+-----------+----------+----------+---------+-------+-----------------------
+ cinema    | postgres | UTF8     | en_IN   | en_IN | 
+ payilagam | postgres | UTF8     | en_IN   | en_IN | 
+ postgres  | postgres | UTF8     | en_IN   | en_IN | 
+ template0 | postgres | UTF8     | en_IN   | en_IN | =c/postgres          +
+           |          |          |         |       | postgres=CTc/postgres
+ template1 | postgres | UTF8     | en_IN   | en_IN | =c/postgres          +
+           |          |          |         |       | postgres=CTc/postgres
+(5 rows)
+
+postgres=# \c cinema
+You are now connected to database "cinema" as user "postgres".
+cinema=# \d cinema
+Did not find any relation named "cinema".
+cinema=# \dt movies
+         List of relations
+ Schema |  Name  | Type  |  Owner   
+--------+--------+-------+----------
+ public | movies | table | postgres
+(1 row)
+
+cinema=# select * from Movies;
+        m_name        |        actor        | year | minites 
+----------------------+---------------------+------+---------
+ sura                 | vijay               | 2010 |     125
+ visvasam varchar(30) | ajith varchar(20)   | 2011 |     124
+  vengai varchar(30)  | dhanush varchar(20) | 2011 |     129
+  singam varchar(30)  | suriya varchar(20)  | 2014 |     125
+(4 rows)
+
+cinema=# 
+cinema=# update Movies rename actor='ajith' where minutes='124';
+ERROR:  syntax error at or near "actor"
+LINE 1: update Movies rename actor='ajith' where minutes='124';
+                             ^
+cinema=# update Movies set actor='ajith' where minutes='124';
+ERROR:  column "minutes" does not exist
+LINE 1: update Movies set actor='ajith' where minutes='124';
+                                              ^
+HINT:  Perhaps you meant to reference the column "movies.minites".
+cinema=# update Movies set actor='ajith' wherecminutes='124';
+ERROR:  syntax error at or near "wherecminutes"
+LINE 1: update Movies set actor='ajith' wherecminutes='124';
+                                        ^
+cinema=# update Movies set actor='ajith' where minutes='124';
+ERROR:  column "minutes" does not exist
+LINE 1: update Movies set actor='ajith' where minutes='124';
+                                              ^
+HINT:  Perhaps you meant to reference the column "movies.minites".
+cinema=# update Movies set actor='ajith' where minutes='124';/^Z
+[1]+  Stopped                 psql
+postgres@dhivya-Lenovo-E41-25:~$ \c cinema;
+c: command not found
+postgres@dhivya-Lenovo-E41-25:~$ \c cinema
+c: command not found
+postgres@dhivya-Lenovo-E41-25:~$ psql
+psql (14.7 (Ubuntu 14.7-0ubuntu0.22.04.1))
+Type "help" for help.
+
+postgres=# \c cinema;
+You are now connected to database "cinema" as user "postgres".
+cinema=# \dt
+         List of relations
+ Schema |  Name  | Type  |  Owner   
+--------+--------+-------+----------
+ public | movies | table | postgres
+(1 row)
+
+cinema=# select*from movies;
+        m_name        |        actor        | year | minites 
+----------------------+---------------------+------+---------
+ sura                 | vijay               | 2010 |     125
+ visvasam varchar(30) | ajith varchar(20)   | 2011 |     124
+  vengai varchar(30)  | dhanush varchar(20) | 2011 |     129
+  singam varchar(30)  | suriya varchar(20)  | 2014 |     125
+(4 rows)
+
+cinema=# update movies set m_name='visvasam' where minites=124;
+UPDATE 1
+cinema=# select*from movies;
+       m_name        |        actor        | year | minites 
+---------------------+---------------------+------+---------
+ sura                | vijay               | 2010 |     125
+  vengai varchar(30) | dhanush varchar(20) | 2011 |     129
+  singam varchar(30) | suriya varchar(20)  | 2014 |     125
+ visvasam            | ajith varchar(20)   | 2011 |     124
+(4 rows)
+
+cinema=# update movies set m_name='vengai',actor='dhanush'  where minites=129;
+UPDATE 1
+cinema=# select*from movies;
+       m_name        |       actor        | year | minites 
+---------------------+--------------------+------+---------
+ sura                | vijay              | 2010 |     125
+  singam varchar(30) | suriya varchar(20) | 2014 |     125
+ visvasam            | ajith varchar(20)  | 2011 |     124
+ vengai              | dhanush            | 2011 |     129
+(4 rows)
+
+cinema=# update movies set m_name='singam',actor='surya'  where year=2014;
+UPDATE 1
+cinema=# select*from movies;
+  m_name  |       actor       | year | minites 
+----------+-------------------+------+---------
+ sura     | vijay             | 2010 |     125
+ visvasam | ajith varchar(20) | 2011 |     124
+ vengai   | dhanush           | 2011 |     129
+ singam   | surya             | 2014 |     125
+(4 rows)
+
+cinema=# update movies set actor='Thala ajith'  where minites=124;
+UPDATE 1
+cinema=# select*from movies;
+  m_name  |    actor    | year | minites 
+----------+-------------+------+---------
+ sura     | vijay       | 2010 |     125
+ vengai   | dhanush     | 2011 |     129
+ singam   | surya       | 2014 |     125
+ visvasam | Thala ajith | 2011 |     124
+(4 rows)
+
+cinema=# ^C
+cinema=# ^C
+cinema=# 
+
+
